@@ -44,9 +44,17 @@ def _excmd_(vcmd):
 	#print chardet.detect(vcmd)
 	#os.system(vcmd)
 	child=subprocess.Popen(vcmd,shell = True)
+	#shell设置为true 表示命令将通过shell执行 默认为false
 	#child=subprocess.check_call(vcmd,shell = True)
 	#print child
 	child.wait()
+	'''
+	subprocess.call('脚本/shell', shell=True)
+	效果等同于
+	s = subprocess.Popen('脚本/shell', shell=True)
+	s.wait()
+	区别是 前者无阻塞和主程序同步执行 后者需要等命令执行完毕
+	'''
 	#child.communicate()
 	#print child.stderr
 	#print child.returncode

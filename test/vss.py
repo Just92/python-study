@@ -27,7 +27,7 @@ import configparser
 #python 3 默认utf-8编码
 #print(sys.getdefaultencoding())
 cf=configparser.ConfigParser()
-cf.read('ck.conf')
+cf.read('ck.conf',encoding='utf-8')
 connect = cf.get('vss','arvg')
 print('this para is %r' %connect)
 
