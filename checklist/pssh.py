@@ -11,6 +11,7 @@ import re
 import commands
 import time
 import paramiko
+#ssh
 import datetime
 import ConfigParser
 
@@ -18,7 +19,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-		
+
 #通过用户名密码连接
 def ssh_connect (host,port,user,password):
 	ssh=paramiko.SSHClient()
@@ -34,7 +35,7 @@ def ssh_connect_key (host,port,user,key_file):
 	key=paramiko.RSAKey.from_private_key_file(key_file)
 	ssh.connect(host,port,user,pkey=key,timeout=30)
 	return ssh
-	
+
 def ssh(hostname,port,username,password,command_list): 
 	s=ssh_connect(hostname,port,username,password)
 	#执行命令

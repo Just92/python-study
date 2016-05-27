@@ -146,6 +146,12 @@ def export_dev_file(relative_path,base_path):
 	base_list = path_list
 	rpath = (sep.join(base_list)).strip(sep)
 	work_dir = (sep.join(path_list)).strip(sep)
+	'''
+	声明：s为字符串，rm为要删除的字符序列
+	s.strip(rm)		删除s字符串中开头、结尾处，位于 rm删除序列的字符
+	s.lstrip(rm)	删除s字符串中开头处，位于 rm删除序列的字符
+	s.rstrip(rm)	删除s字符串中结尾处，位于 rm删除序列的字符
+	'''
 	work_path = '%s\\%s\\' %(base_path,work_dir)
 	fpath = os.path.join(work_path,fname)
 	#print work_path

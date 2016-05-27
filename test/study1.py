@@ -208,16 +208,174 @@
 #start()
 #-----------------------------------------------------------------------------------------------------------
 #sys.argv[0]显示的是当前python脚本的绝对路径
-import sys
-import os
-print("script path is : %s" %sys.argv[0])
-ini_file = os.path.join(sys.path[0],'temp.txt')
-print(ini_file)
+#import sys
+#import os
+#print("script path is : %s" %sys.argv[0])
+#ini_file = os.path.join(sys.path[0],'temp.txt')
+#print(ini_file)
 #-----------------------------------------------------------------------------------------------------------
+#!/usr/bin/env python
+#coding: utf-8
+ 
+#import urllib.request
+##import urllib2
+#import os
+#import re
+#import sys
+# 
+##显示下载进度
+#def schedule(a,b,c):
+#    '''
+#    a:已经下载的数据块
+#    b:数据块的大小
+#    c:远程文件的大小
+#    '''
+#    per = 100.0 * a * b / c
+#    if per > 100 :
+#        per = 100
+#    print ('%.2f%%' % per)
+# 
+##获取html源码
+#def getHtml(url):
+#    page = urllib.request.urlopen(url)
+#    html = page.read()
+#    return html
+# 
+##下载图片
+#def downloadImg(html, num, foldername):
+#    picpath = '%s' % (foldername)       #下载到的本地目录
+#    if not os.path.exists(picpath):     #路径不存在时创建一个
+#        os.makedirs(picpath)
+#    target = picpath+'/%s.jpg' % num
+#    myItems = re.findall('<p><a href="http:\/\/www.mzitu.com/.*?" ><img src="(.*?)" alt=".*?" /></a></p>',html,re.S)
+#    print ('Downloading image to location: ' + target)
+#    urllib.urlretrieve(myItems[0], target, schedule)
+# 
+##正则匹配分页
+#def findPage(html):
+#    myItems = re.findall('<span>(\d*)</span>', html, re.S)
+#    return myItems.pop()
+# 
+##正则匹配列表
+#def findList(html):
+#    myItems = re.findall('<h2><a href="http://www.mzitu.com/(\d*)" title="(.*?)" target="_blank">.*?</a></h2>', html, re.S)
+#    return myItems
+# 
+##总下载
+#def totalDownload(modelUrl):
+#    listHtml5 = getHtml(modelUrl)
+#    listContent = findList(listHtml)
+#    for list in listContent:
+#        html = getHtml('http://www.mzitu.com/' + str(list[0]))
+#        totalNum = findPage(html)
+#        for num in range(1, int(totalNum)+1):
+#            if num == 1:
+#                url = 'http://www.mzitu.com/' + str(list[0])
+#                html5 = getHtml(url)
+#                downloadImg(html5, str(num), str(list[1]))
+#            else:
+#                url = 'http://www.mzitu.com/' + str(list[0]) + '/'+str(num)
+#                html5 = getHtml(url)
+#                downloadImg(html5, str(num), str(list[1]))
+# 
+#if __name__ == '__main__':
+#    listHtml = getHtml('http://www.mzitu.com/model')    #这是其中一个模块的url，可以添加不同的模块url从而达到整站爬取。
+#    for model in range(1, int(findPage(listHtml))+1):
+#        if model == 1:
+#            modelUrl = 'http://www.mzitu.com/model'
+#            totalDownload(modelUrl)
+#        else:
+#            modelUrl = 'http://www.mzitu.com/model/page/' + str(model)
+#            totalDownload(modelUrl)
+#    print ("Download has finished.")
+#---------------------------------------------------------------------------------------------------------------------------------
+# encoding:utf-8
 
-
-
-
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Aug 07 17:30:58 2015
+ 
+@author: Dreace
+"""
+import urllib
+import sys
+import time
+import os
+import random
+from multiprocessing.dummy import Pool as ThreadPool 
+type_ = sys.getfilesystemencoding()
+def rename():
+    return time.strftime("%Y%m%d%H%M%S")
+def rename_2(name):  
+    if len(name) == 2:  
+        name = '0' + name + '.jpg' 
+    elif len(name) == 1:  
+        name = '00' + name + '.jpg' 
+    else:  
+        name = name + '.jpg' 
+    return name
+def download_pic(i):
+    global count
+    global time_out
+    if Filter(i):
+        try: 
+            content = urllib.urlopen(i,timeout = time_out)
+            url_content = content.read()
+            file_name = repr(random.randint(10000,999999999)) + "_" + rename_2(repr(count))
+            f = open(file_name,"wb")
+            f.write(url_content)
+            f.close()
+            if os.path.getsize(file_name) >= 1024*11:
+                count += 1
+            else:
+                os.remove(file_name)
+        except:
+            print (1)
+def Filter(content):
+    for line in Filter_list:
+        if content.find(line) == -1:
+            return True
+def get_pic(url_address):
+    global pic_list
+    global time_out
+    global headers
+    try:
+        req = urllib.Request(url = url_address,headers = headers)
+        str_ = urllib.urlopen(req, timeout = time_out).read()
+        url_content = str_.split("\'")
+        for i in url_content:
+            if i.find(".jpg") != -1:
+                pic_list.append(i)   
+    except:
+        print (2)
+MAX = 100
+count = 0
+time_out = 60
+thread_num = 50
+pic_list = []
+page_list = []
+pic_kind = ["hot","share","mm","taiwan","japan","model"]
+Filter_list = ["imgsize.ph.126.net","img.ph.126.net","img2.ph.126.net"]
+dir_name = "C:\Photos\\"+rename()
+os.makedirs(dir_name)
+os.chdir(dir_name)
+start_time = time.time()
+url_address = "http://www.mzitu.com/model/page/"
+headers = {"User-Agent":" Mozilla/5.0 (Windows NT 10.0; rv:39.0) Gecko/20100101 Firefox/39.0"}
+for pic_i in pic_kind:     
+    for i in range(1,MAX + 1):  
+        page_list.append(url_address + pic_i + "/page/" + repr(i))
+page_pool = ThreadPool(thread_num)
+page_pool.map(get_pic,page_list)
+page_pool.close()
+page_pool.join()
+print ("获取到".encode(type_),len(pic_list),"张图片，开始下载！".encode(type_))
+pool = ThreadPool(thread_num) 
+pool.map(download_pic,pic_list)
+pool.close() 
+pool.join()
+#print (count,"张图片保存在".encode(type_) + dir_name)
+#print ("共耗时".encode(type_),time.time() - start_time,"s")
 
 
 
