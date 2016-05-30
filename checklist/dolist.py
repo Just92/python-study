@@ -177,12 +177,14 @@ def obj_do(root_dir,release,build):
 				relpath = src.replace(src_base,'')	#获取相对路径
 				dst_base = ur'\\192.168.55.51\eps_share\eps'
 				#dst_base = ur'\\192.168.55.80\vss_tmp'	#test
-				'''dst = ur'%s%s' %(dst_base,relpath)
+				'''
+				dst = ur'%s%s' %(dst_base,relpath)
 				if not os.path.isdir(dst):
 					os.makedirs(dst)
 				print u'[INFO]:拷贝EPS报表文件 %s --> %s ' %(src,dst)
 				eps_CopiedNum = pfile._copyFiles_(src,dst)
-				print u'[INFO]:拷贝文件个数 %s' %eps_CopiedNum'''
+				print u'[INFO]:拷贝文件个数 %s' %eps_CopiedNum
+				'''
 				warn_info = u'eps: 请手动将目录%s 中的文件上传到服务器%s' %(src_base,dst_base)
 			elif rlist[3] == r'easyetl':
 				print u'[INFO]:处理EASYETL主机文件	%s' %filetype

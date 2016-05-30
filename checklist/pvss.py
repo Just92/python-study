@@ -32,6 +32,9 @@ cf.read(ini_file)
 vss_arvg = unicode(cf.get("vss", "arvg"))
 vss_tmpdir = unicode(cf.get("vss", "tmpdir"))
 ISOTIMEFORMAT = u'%Y-%m-%d %X'
+#python 2.x的用法 python3不需要
+#u'string'  表示 已经是 unicode 编码的 'string' 字符串
+#unicode('string') 是 即将要把 'string' 转化为 unicode 编码（但在执行这条语句之前，还不一定是unicode编码）
 nowtime = time.strftime( ISOTIMEFORMAT,time.localtime())
 
 	

@@ -25,6 +25,7 @@ sys.setdefaultencoding('utf-8')
 #设置VSS默认访问方式
 vss_arvg = r'-server 192.168.55.61 -port 8877 -username huzhonghai -pwd 7216797 -alias htsc_vss'
 vss_tmpdir = r'-tempdir c:\\temp'
+#r''
 '''
 SVN_BASE_URL = r'https://192.168.55.120/svn/crm_code'
 SVN_TRUNK_URL = r'%s/trunk' %SVN_BASE_URL

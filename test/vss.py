@@ -26,8 +26,20 @@ import configparser
 #sys.setdefaultencoding('utf-8')
 #python 3 默认utf-8编码
 #print(sys.getdefaultencoding())
+#vsscmd = r'SAWVcmd GetFile -server 192.168.55.61 -port 8877 -username huzhonghai -pwd 7216797 -alias htsc_vss -workdir D:\SVN\tmp\DEV\8.1.1\build04\ACRM\pkg -prj $/源码管理/DEV/ACRM/后端/PACKAGE -file ZS.pck -tempdir c:\\temp'
 cf=configparser.ConfigParser()
 cf.read('ck.conf',encoding='utf-8')
-connect = cf.get('vss','arvg')
-print('this para is %r' %connect)
+cntPara = cf.get('vss','arvg')
+prj = cf.get('vss_ck','project')
+#release = cf.get('vss_ck','release')
+fileName = cf.get('vss_ck','file')
+print('cntpara is %r,' %cntPara)
+print('prj is %r,' %prj)
+#print('release is %r,' %release)
+print('fileName is %r,' %fileName)
 
+def exCmd(cmd):
+	child = subprocess.Popen(cmd,shell = True)
+	child.wait()
+def getfile(build_num,localdir):
+		Vss_dir = r''

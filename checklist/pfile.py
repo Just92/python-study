@@ -311,6 +311,12 @@ def warn_prompt(warnlist):
 #输入起始值和结束值，输出起始到结束的范围值list
 def range_seq(start_value,end_value):
 	start_int = start_value if isinstance(start_value,(int,float)) else int(start_value)
+	'''
+	if isinstance(start_value,(int,float)):
+		start_int = start_value
+	else :
+		start_int = int(start_value)
+	'''
 	end_int = end_value if isinstance(end_value,(int,float)) else int(end_value)
 	range_list=[]
 	#print start_int,end_int,end_value
@@ -498,6 +504,7 @@ def unzip_file(zipfilename, unzipdirname):
 	| ##@函数逻辑：
 	"""
 	zipfilename = os.path.abspath(zipfilename)  
+	#abspath 返回规范化的绝对路径。   
 	unzipdirname = os.path.abspath(unzipdirname)  
 	print "[INFO]: Start to unzip file %s to folder %s ..." %(zipfilename, unzipdirname)  
 	if not os.path.exists(zipfilename):  
